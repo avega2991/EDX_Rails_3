@@ -1,0 +1,10 @@
+<h1>Rename product '<%= @product.name %>'</h1>
+
+<%= form_for [@group, @product] do |f| %>
+
+    <p><%= f.text_field :name %></p>
+    <p><%= f.submit "Submit" %></p>
+
+<% end %>
+
+<p><%= link_to "Back to products", group_products_path(params[:group_id]) %></p>

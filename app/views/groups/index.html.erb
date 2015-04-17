@@ -1,0 +1,19 @@
+<h1>Groups</h1>
+<p id="notice"><%= notice %></p>
+
+<table>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+  </tr>
+  <% @groups.each do |i| %>
+      <tr>
+        <td><%= i.id %></td>
+        <td><%= link_to i.name, group_products_path(i) %></td>
+        <td><%= link_to "Rename", edit_group_path(i) %></td>
+        <td><%= link_to "Delete", group_path(i), method: :delete %></td>
+      </tr>
+  <% end %>
+</table>
+
+<p><%= link_to 'Create new group', new_group_path %></p>
