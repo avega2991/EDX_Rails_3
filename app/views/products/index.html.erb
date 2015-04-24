@@ -7,16 +7,16 @@
     <th>Id</th>
     <th>Name</th>
   </tr>
-  <% @products.each do |i| %>
+  <% @products.each do |product| %>
       <tr>
-        <td><%= i.group_id %></td>
-        <td><%= i.id %></td>
-        <td><%= i.name %></td>
-        <td><%= link_to "Rename", edit_group_product_path(:id => i.id) %></td>
-        <td><%= link_to "Delete", group_product_path(i.group_id, i), confirm: "Are you sure?", method: :delete %></td>
+        <td><%= product.group_id %></td>
+        <td><%= product.id %></td>
+        <td><%= product.name %></td>
+        <td><%= link_to "Rename", [:edit, @group, product] %></td>
+        <td><%= link_to "Delete", [@group, product], confirm: "Are you sure?", method: :delete %></td>
       </tr>
   <% end %>
 </table>
 
-<p><%= link_to 'Create new product', new_group_product_path %></p>
+<p><%= link_to 'Create new product', :action => 'new' %></p>
 <p><%= link_to "Back to groups", groups_path %></p>

@@ -6,14 +6,14 @@
     <th>Id</th>
     <th>Name</th>
   </tr>
-  <% @groups.each do |i| %>
+  <% @groups.each do |group| %>
       <tr>
-        <td><%= i.id %></td>
-        <td><%= link_to i.name, group_products_path(i) %></td>
-        <td><%= link_to "Rename", edit_group_path(i) %></td>
-        <td><%= link_to "Delete", group_path(i), method: :delete %></td>
+        <td><%= group.id %></td>
+        <td><%= link_to group.name, [group, :products] %></td>
+        <td><%= link_to "Rename", [:edit, group] %></td>
+        <td><%= link_to "Delete", group, method: :delete %></td>
       </tr>
   <% end %>
 </table>
 
-<p><%= link_to 'Create new group', new_group_path %></p>
+<p><%= link_to 'Create new group', :action => 'new' %></p>

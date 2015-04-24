@@ -1,48 +1,51 @@
 class ProductsController < ApplicationController
 
+  before_filter :find_group
+  before_filter :find_product, :only => [:update, :edit, :destroy]
+
   def index
-    @group = Group.find(params[:group_id])
     @products = Product.find_all_by_group_id(params[:group_id])
   end
 
   def new
-    @group = Group.find(params[:group_id])
-    @product = Product.new(:group_id => @group.id)
+    @product = Product.new
   end
 
   def create
-    @product = Product.create(:group_id => params[:group_id], :name => params[:product][:name])
-    redirect_to group_products_path(params[:group_id]), :notice => "Product '" << @product.name << "' has been created"
+    @product = Product.create(params[:product])
+    @product.update_attributes(:group_id => @group.id)
+    redirect_to [@group, :products], :notice => "Product '#{@product.name}' has been created"
   end
 
   def edit
-    @group = Group.find(params[:group_id])
-    @product = Product.find(params[:id])
   end
 
   def update
-    @product = Product.find(params[:id])
-    @notice = "Renaming has been finished: '" << @product.name << "' => '"
+    @old_product_name = @product.name
 
-    @product.name = params[:product][:name]
-    @product.save
-    @notice << @product.name << "'"
-
-    redirect_to group_products_path(params[:group_id]), :notice => @notice
+    if @product.update_attributes(params[:product])
+      @notice = "Renaming has been finished: '#{@old_product_name}' => '#{@product.name}'"
+      redirect_to [@group, :products], :notice => @notice
+    else
+      @notice = @product.errors.full_messages.to_s
+      redirect_to :action => "edit", :notice => @notice
+    end
   end
 
   def destroy
-    @product = Product.find(params[:id])
-    @notice = "Product '" << @product.name << "' has been destroyed"
     @product.destroy
 
-    redirect_to group_products_path(params[:group_id], notice: @notice)
+    redirect_to [@group, :products], notice: "Product '#{@product.name}' has been destroyed"
   end
 
   private
 
-  def find
+  def find_group
+    @group = Group.find(params[:group_id])
+  end
 
+  def find_product
+    @product = Product.find(params[:id])
   end
 
 end
